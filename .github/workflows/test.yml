@@ -11,16 +11,16 @@ jobs:
   test-github-action:
     runs-on: ubuntu-latest
 
-    steps:    
+    steps:
     - name: Checkout the head commit of the branch
       uses: actions/checkout@v2
       with:
         persist-credentials: false
-                       
-    - name: Test 
+
+    - name: Test
       uses: romoh/dependencies-autoupdate@main
-      with: 
+      with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        update-command: "'> test.txt'"
+        update-command: "> test.txt"
         # don't provide update-path as its optional
-        on-changes-command: "'echo On update command action'"
+        on-changes-command: "echo 'On update command action'"

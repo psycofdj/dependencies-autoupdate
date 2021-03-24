@@ -19,16 +19,16 @@ jobs:
       uses: actions/checkout@v2
       with:
         persist-credentials: false
-                  
+
     - name: Go setup
       uses: actions/setup-go@v2
-             
-    - name: Run auto dependency update 
+
+    - name: Run auto dependency update
       uses: romoh/dependencies-autoupdate@v1
-      with: 
+      with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        update-command: "'go get -u && go mod tidy && go build'"
-        update-path: "'./test/go'" #optional
+        update-command: go get -u && go mod tidy && go build
+        update-path: ./test/go #optional
 ```
 
 It is recommended to use this action on a [schedule trigger](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#onschedule) at a fixed cadence, but it can be used on other triggers as well. Just note GitHub has limitations on default GITHUB_TOKEN access from forks.
@@ -41,6 +41,10 @@ token |	GITHUB_TOKEN or a repo scoped Personal Access Token (PAT). | Yes | N/A
 update-command | Command to update the dependencies and validate the changes. e.g. `cargo update && cargo test` or `go get -u && go mod tidy && go build`. | Yes | N/A
 update-path | Path to execute the update command if different from the main working directory. | No | defaults to working directory
 on-changes-command | Command to execute after updates to dependencies are detected. This will be executed before the pull request is created. e.g. version increment. | No | N/A
+base-branch-name | Create pull request from given base branch | No | main
+pr-branch-name | Pushed given branch name | No | automated-dependencies-update
+pr-title | Create pull request with given title | No | Autoupdate dependencies
+
 
 # Action outputs
 - Success: Success means that the action completed successfully. If dependency updates were detected, a pull request will be open and action succeeds. Similarily, If no changes were detected, the action succeeds.
@@ -54,7 +58,7 @@ If a pull request already exists and there are no further changes (i.e. no diff 
 
 Notes:
 * The committer name is set to the GitHub Actions bot user. GitHub <noreply@github.com>
-* The pull request branch name is fixed and defaults to "automated-dependencies-update".
+* The pull request branch defaults to "automated-dependencies-update".
 * Pull request defaults	to the branch checked out in the workflow.
 
 # License

@@ -13,21 +13,20 @@ jobs:
   auto-update-rust-dependencies:
     runs-on: ubuntu-latest
 
-    steps:    
+    steps:
     - name: Checkout the head commit of the branch
       uses: actions/checkout@v2
       with:
         persist-credentials: false
-          
+
     - name: Rust tools
       uses: actions-rs/toolchain@v1
       with:
         toolchain: stable
-             
-    - name: Run auto dependency update 
+
+    - name: Run auto dependency update
       uses: romoh/dependencies-autoupdate@main
-      with: 
+      with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        update-command: "'cargo update && cargo test'"
-        update-path: "'./test/rust'"
-        
+        update-command: cargo update && cargo test
+        update-path: ./test/rust

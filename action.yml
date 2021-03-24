@@ -1,7 +1,7 @@
 name: 'Dependencies Autoupdate'
 description: 'Language agnostic action that automatically updates dependencies and creates PR with the changes. e.g.: go, js, rust, py, ts'
 branding:
-  icon: 'arrow-up-circle'  
+  icon: 'arrow-up-circle'
   color: 'green'
 inputs:
   token:
@@ -13,11 +13,24 @@ inputs:
   update-path:
     description: Path to directory to run the update-command. If not provided defaults to root
     required: false
+    default: .
   on-changes-command:
     description: Command to run if dependencies update and changes were detected. This can be version increments or extra checks.
     required: false
+  base-branch-name:
+    description: Repository's target branch
+    required: false
+    default: main #ffs master was a fine name
+  pr-branch-name:
+    description: Pull request's branch name
+    required: false
+    default: automated-dependencies-update
+  pr-title:
+    description: Pull request's title
+    required: false
+    default: Autoupdate dependencies
 runs:
   using: 'composite'
   steps:
-     - run: ${{ github.action_path }}/autoupdate-dependencies.sh ${{ inputs.token }} ${{ inputs.update-command }} ${{ inputs.update-path }}? ${{ inputs.on-changes-command }}?
+     - run: ${{ github.action_path }}/autoupdate-dependencies.sh "${{ inputs.token }}" "${{ inputs.update-command }}" "${{ inputs.update-path }}" "${{ inputs.base-branch-name }}" "${{ inputs.pr-branch-name }}" "${{inputs.pr-title}}" "${{ inputs.on-changes-command }}?"
        shell: bash
